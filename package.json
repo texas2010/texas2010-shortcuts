@@ -1,0 +1,23 @@
+{
+  "name": "texas2010-shortcuts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "eslintConfig": {
+    "extends": "@scriptable-ios"
+  },
+  "scripts": {
+    "build-init": "ln -s ~/Library/Mobile\\ Documents/iCloud~dk~simonbs~Scriptable/Documents/ dist",
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json --watch --preserveWatchOutput"
+  },
+  "author": "texas2010",
+  "license": "MIT",
+  "devDependencies": {
+    "@scriptable-ios/eslint-config": "^1.7.0",
+    "@types/scriptable-ios": "^1.7.8",
+    "eslint": "^8.57.1",
+    "typescript": "^5.9.3"
+  }
+}
