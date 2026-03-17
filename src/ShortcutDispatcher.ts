@@ -9,7 +9,8 @@ interface shortcutParameter {
   options?: object;
 }
 
-const { actionType, inputData } = args.shortcutParameter as shortcutParameter;
+const { actionType, sourceShortcut, inputData } =
+  args.shortcutParameter as shortcutParameter;
 
 const consoleLog = async (subtitle: string = '', body: string) => {
   const n = new Notification();
@@ -19,11 +20,20 @@ const consoleLog = async (subtitle: string = '', body: string) => {
   await n.schedule();
 };
 
-if (!actionType) {
+if (!actionType || !sourceShortcut) {
+  let errorMessage;
+  if (!actionType && !sourceShortcut) {
+    errorMessage = "actionType and sourceShortcut can't be empty";
+  } else if (!actionType) {
+    errorMessage = "actionType can't be empty";
+  } else if (!sourceShortcut) {
+    errorMessage = "sourceShortcut can't be empty";
+  }
+
   if (config.runsWithSiri) {
     Script.setShortcutOutput({
       error: true,
-      message: "actionType can't be empty",
+      message: errorMessage,
     });
     Script.complete();
     // @ts-ignore

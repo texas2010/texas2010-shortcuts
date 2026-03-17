@@ -1,4 +1,5 @@
 import { runAppleScript } from 'run-applescript';
+import { isValidJson } from './isValidJson';
 
 interface ShortcutInput {}
 
@@ -7,19 +8,11 @@ interface RunShortcutResSuccess {
   sourceShortcut: string;
 }
 
-// interface RunShortcutResSuccessWithData<T> extends RunShortcutResSuccess {
-//   data: T;
-// }
-
 interface RunShortcutResError {
   error: true;
   sourceShortcut: string;
   message: string;
 }
-
-// type RunShortcutPromiseReturn = Promise<
-//   RunShortcutResSuccess | RunShortcutResSuccessWithData<T> | RunShortcutResError
-// >;
 
 export const runShortcutShell = async <T>(
   shortcutName: string,
@@ -30,7 +23,7 @@ export const runShortcutShell = async <T>(
 
   const json = JSON.stringify(input).replace(/"/g, '\\"');
 
-  console.log('runShortcutShell JSON:', json);
+  // console.log('runShortcutShell JSON:', json);
 
   try {
     const appleScriptTemplate = `
@@ -46,33 +39,36 @@ export const runShortcutShell = async <T>(
       end tell
     `;
 
-    console.log('appleScriptTemplate', appleScriptTemplate);
+    // console.log('appleScriptTemplate', appleScriptTemplate);
     const result = await runAppleScript(appleScriptTemplate);
-    // const result = await runAppleScript(`
-    //   set json to "${json}"
-    //   tell application "Shortcuts Events"
-    //     run shortcut "${shortcutName}" with input json
-    //   end tell
-    // `);
 
-    console.log('runShortcutShell Result: ', result, 'Type:', typeof result);
+    // console.log('runShortcutShell Result: ', result, 'Type:', typeof result);
 
-    try {
-      const maybeJson = JSON.parse(result);
-      console.log('runShortcutShell: maybeJson', maybeJson);
-
-      return maybeJson;
-    } catch {
-      throw new Error('runShortcutShell: JSON Parse converted is failed');
+    if (isValidJson(result)) {
+      return JSON.parse(result);
     }
+    throw new Error(
+      `runShortcutShell: Response is invalid and not JSON.${
+        !!result ? ' ' + result : ''
+      }`
+    );
+
+    // try {
+    //   const maybeJson = JSON.parse(result);
+    //   console.log('runShortcutShell: maybeJson', maybeJson);
+
+    //   return maybeJson;
+    // } catch {
+    //   throw new Error('runShortcutShell: JSON Parse converted is failed');
+    // }
   } catch (error) {
     console.log('runShortcutShell Error:', error);
     if (error && 'message' in error) {
       console.log('error with message', error.message);
-      if (error.message.includes('JSON Parse')) {
+      if (error.message.includes('not JSON')) {
         throw new Error(error.message);
       }
     }
-    throw new Error('runShortcutShell: Shortcut data response is not valid');
+    throw new Error('runShortcutShell: Something wrong with something');
   }
 };
