@@ -20,7 +20,11 @@ const consoleLog = async (subtitle: string = '', body: string) => {
   await n.schedule();
 };
 
-if (!actionType || !sourceShortcut) {
+const isObjectNotEmpty = (obj: object) => {
+  return obj && typeof obj === 'object' && Object.keys(obj).length > 0;
+};
+
+if (!actionType || !sourceShortcut || !isObjectNotEmpty(inputData)) {
   let errorMessage;
   if (!actionType && !sourceShortcut) {
     errorMessage = "actionType and sourceShortcut can't be empty";
@@ -28,6 +32,8 @@ if (!actionType || !sourceShortcut) {
     errorMessage = "actionType can't be empty";
   } else if (!sourceShortcut) {
     errorMessage = "sourceShortcut can't be empty";
+  } else if (!isObjectNotEmpty(inputData)) {
+    errorMessage = "inputData can't be empty";
   }
 
   if (config.runsWithSiri) {

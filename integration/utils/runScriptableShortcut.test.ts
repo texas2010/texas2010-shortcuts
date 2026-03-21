@@ -1,6 +1,9 @@
 import { describe, expect, test } from 'vitest';
 
-import { runScriptableShortcut } from './runScriptableShortcut';
+import {
+  runScriptableShortcut,
+  RunScriptableParams,
+} from './runScriptableShortcut';
 
 describe('RunScriptableShortcut function', () => {
   test('should be exist', () => {
@@ -25,57 +28,58 @@ describe('RunScriptableShortcut function', () => {
     await expect(func).rejects.toThrow(message);
   });
 
-  test('should have an error message when actionType is empty', async () => {
+  test('should have an error message when actionType is empty', async ({
+    expect,
+  }) => {
     const params = {
       actionType: '',
       sourceShortcut: 'sourceShortcut',
       inputData: {},
-    } as Parameters<typeof runScriptableShortcut>[0];
+    } as RunScriptableParams;
+    const errorMessage = "actionType can't be empty";
 
-    const func = await runScriptableShortcut(params);
-    expect(func).toStrictEqual({
-      error: true,
-      message: "actionType can't be empty",
-    });
+    const func = runScriptableShortcut(params);
+    await expect(func).rejects.toThrow(errorMessage);
   });
 
-  test('should have an error message when sourceShortcut is empty', async () => {
+  test('should have an error message when sourceShortcut is empty', async ({
+    expect,
+  }) => {
     const params = {
       actionType: 'actionType',
       sourceShortcut: '',
       inputData: {},
-    } as Parameters<typeof runScriptableShortcut>[0];
+    } as RunScriptableParams;
+    const errorMessage = "sourceShortcut can't be empty";
 
-    const func = await runScriptableShortcut(params);
-    expect(func).toStrictEqual({
-      error: true,
-      message: "sourceShortcut can't be empty",
-    });
+    const func = runScriptableShortcut(params);
+    await expect(func).rejects.toThrow(errorMessage);
   });
-  test('should have an error message when actionType and sourceShortcut is empty', async () => {
+  test('should have an error message when actionType and sourceShortcut is empty', async ({
+    expect,
+  }) => {
     const params = {
       actionType: '',
       sourceShortcut: '',
-    } as Parameters<typeof runScriptableShortcut>[0];
+    } as RunScriptableParams;
+    const errorMessage = "actionType and sourceShortcut can't be empty";
 
-    const func = await runScriptableShortcut(params);
-    expect(func).toStrictEqual({
-      error: true,
-      message: "actionType and sourceShortcut can't be empty",
-    });
+    const func = runScriptableShortcut(params);
+    await expect(func).rejects.toThrow(errorMessage);
   });
 
-  test('should have an error message when inputData is empty', async () => {
+  test('should have an error message when inputData is empty', async ({
+    expect,
+  }) => {
     const params = {
       actionType: 'actionType',
       sourceShortcut: 'sourceShortcut',
       inputData: {},
-    } as Parameters<typeof runScriptableShortcut>[0];
+    } as RunScriptableParams;
 
-    const func = await runScriptableShortcut(params);
-    expect(func).toStrictEqual({
-      error: true,
-      message: "inputData can't be empty",
-    });
+    const errorMessage = "inputData can't be empty";
+
+    const func = runScriptableShortcut(params);
+    await expect(func).rejects.toThrow(errorMessage);
   });
 });
