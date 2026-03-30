@@ -7,10 +7,14 @@ interface shortcutParameter {
   sourceShortcut: string;
   inputData: object;
   options?: object;
+  readonly _is_shortcut_json?: boolean;
 }
 
-const { actionType, sourceShortcut, inputData } =
-  args.shortcutParameter as shortcutParameter;
+interface ErrorResult {
+  error: boolean;
+  message: string;
+  _is_shortcut_json?: boolean;
+}
 
 const consoleLog = async (subtitle: string = '', body: string) => {
   const n = new Notification();
@@ -23,6 +27,34 @@ const consoleLog = async (subtitle: string = '', body: string) => {
 const isObjectNotEmpty = (obj: object) => {
   return obj && typeof obj === 'object' && Object.keys(obj).length > 0;
 };
+
+const rawShortcutParameter = args.shortcutParameter;
+
+if ('_is_shortcut_json' in rawShortcutParameter) {
+  delete rawShortcutParameter['_is_shortcut_json'];
+}
+
+if (!rawShortcutParameter || !isObjectNotEmpty(rawShortcutParameter)) {
+  if (config.runsWithSiri) {
+    const errorResult = {
+      error: true,
+      message: `Input can't be empty`,
+    } as ErrorResult;
+
+    if (args.shortcutParameter._is_shortcut_json) {
+      errorResult['_is_shortcut_json'] =
+        args.shortcutParameter._is_shortcut_json;
+    }
+
+    Script.setShortcutOutput(errorResult);
+    Script.complete();
+    // @ts-ignore
+    return;
+  }
+}
+
+const { actionType, sourceShortcut, inputData, _is_shortcut_json } =
+  args.shortcutParameter as shortcutParameter;
 
 if (!actionType || !sourceShortcut || !isObjectNotEmpty(inputData)) {
   let errorMessage;
@@ -37,23 +69,38 @@ if (!actionType || !sourceShortcut || !isObjectNotEmpty(inputData)) {
   }
 
   if (config.runsWithSiri) {
-    Script.setShortcutOutput({
+    const errorResult = {
       error: true,
       message: errorMessage,
-    });
+    } as ErrorResult;
+
+    if (_is_shortcut_json) {
+      errorResult['_is_shortcut_json'] = _is_shortcut_json;
+    }
+
+    Script.setShortcutOutput(errorResult);
     Script.complete();
     // @ts-ignore
     return;
   }
 }
 
-const result = {
+const successResult = {
   ...inputData,
+  success: true,
   shortcutDispatcher: 'This is a scriptable script.',
+} as {
+  _is_shortcut_json?: boolean;
 };
 
+if (_is_shortcut_json) {
+  successResult['_is_shortcut_json'] = _is_shortcut_json;
+}
+
+// consoleLog('Success Result', JSON.stringify(successResult));
+
 if (config.runsWithSiri) {
-  Script.setShortcutOutput(result);
+  Script.setShortcutOutput(successResult);
   Script.complete();
   // @ts-ignore
   return;

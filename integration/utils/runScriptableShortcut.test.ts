@@ -15,7 +15,7 @@ describe('RunScriptableShortcut function', () => {
   }) => {
     // @ts-ignore
     const func = runScriptableShortcut();
-    const message = 'RunScriptable: Input must be Dictionary';
+    const message = 'Input must be exist';
     await expect(func).rejects.toThrow(message);
   });
 
@@ -24,7 +24,15 @@ describe('RunScriptableShortcut function', () => {
   }) => {
     // @ts-ignore
     const func = runScriptableShortcut('it is just string');
-    const message = 'RunScriptable: Input must be Dictionary or JSON';
+    const message = 'Input must be Dictionary or JSON';
+    await expect(func).rejects.toThrow(message);
+  });
+  test('should have an error message when argument is empty object', async ({
+    expect,
+  }) => {
+    // @ts-ignore
+    const func = runScriptableShortcut({});
+    const message = `Input can't be empty`;
     await expect(func).rejects.toThrow(message);
   });
 
@@ -81,5 +89,23 @@ describe('RunScriptableShortcut function', () => {
 
     const func = runScriptableShortcut(params);
     await expect(func).rejects.toThrow(errorMessage);
+  });
+
+  test('should have success message', async () => {
+    const params = {
+      actionType: 'actionType',
+      sourceShortcut: 'sourceShortcut',
+      inputData: {
+        successMessage: 'This is a success Message',
+      },
+    } as RunScriptableParams;
+
+    const expected = {
+      success: true,
+      ...params.inputData,
+    };
+
+    const result = await runScriptableShortcut(params);
+    expect(result).toMatchObject(expected);
   });
 });
