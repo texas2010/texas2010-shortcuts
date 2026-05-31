@@ -24,7 +24,7 @@ describe('RunScriptableShortcut function', () => {
   }) => {
     // @ts-ignore
     const func = runScriptableShortcut('it is just string');
-    const message = 'Input must be Dictionary or JSON';
+    const message = 'Input must be Dictionary';
     await expect(func).rejects.toThrow(message);
   });
   test('should have an error message when argument is empty object', async ({
@@ -32,7 +32,7 @@ describe('RunScriptableShortcut function', () => {
   }) => {
     // @ts-ignore
     const func = runScriptableShortcut({});
-    const message = `Input can't be empty`;
+    const message = `Input object can't be empty`;
     await expect(func).rejects.toThrow(message);
   });
 

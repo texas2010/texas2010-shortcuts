@@ -5,9 +5,10 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     fileParallelism: false,
-    include: ['integration/**/*.test.ts'],
+    include: ['integration/**/*.test.ts', 'src/**/*.test.ts'],
     typecheck: {
       tsconfig: './tsconfig.vitest.json',
     },
+    setupFiles: './vitest.setup.ts',
   },
 });
