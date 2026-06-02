@@ -8,9 +8,11 @@
     "extends": "@scriptable-ios"
   },
   "scripts": {
-    "build-init": "ln -s ~/Library/Mobile\\ Documents/iCloud~dk~simonbs~Scriptable/Documents/ dist",
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck:build": "tsc -p tsconfig.build.json --noEmit",
+    "typecheck:test": "tsc -p tsconfig.vitest.json",
+    "typecheck": "npm run typecheck:build && npm run typecheck:test",
+    "build": "vite build",
+    "build:watch": "vite build --watch",
     "test": "vitest run",
     "dev": "vitest"
   },
