@@ -1,4 +1,4 @@
-export const isValidJson = (input) => {
+export const isValidJson = (input: string) => {
   if (typeof input !== 'string') return false;
 
   try {
