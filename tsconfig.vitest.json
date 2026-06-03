@@ -11,8 +11,7 @@
   },
   "include": [
     "vitest.config.ts",
-    "vitest.global-setup.ts",
-    "vitest-build-status.ts",
+    "vitest/**/*.ts",
     "integration/**/*.ts",
     "src/**/*.test.ts"
   ],

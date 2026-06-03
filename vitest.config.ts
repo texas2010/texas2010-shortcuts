@@ -9,7 +9,7 @@ export default defineConfig({
     typecheck: {
       tsconfig: './tsconfig.vitest.json',
     },
-    globalSetup: './vitest.global-setup.ts',
-    setupFiles: './vitest.setup.ts',
+    globalSetup: './vitest/globalSetup.ts',
+    setupFiles: './vitest/setupFile.ts',
   },
 });

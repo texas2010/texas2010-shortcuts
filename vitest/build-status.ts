@@ -5,5 +5,5 @@ export type VitestBuildStatus = {
 };
 
 export const buildStatusJson = new JsonFile<VitestBuildStatus>(
-  '.vitest-build-status.json',
+  'vitest/build-status.json',
 );

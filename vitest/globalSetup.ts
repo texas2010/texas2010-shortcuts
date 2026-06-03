@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import type { TestProject } from 'vitest/node';
 
-import { buildStatusJson } from './vitest-build-status';
+import { buildStatusJson } from './build-status';
 
 async function runBuild(): Promise<void> {
   await new Promise<void>((resolve, reject) => {

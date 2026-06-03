@@ -5,5 +5,5 @@ dist
 
 node_modules
 
-.vitest-build-status.json
+vitest/build-status.json
 *.tsbuildinfo
