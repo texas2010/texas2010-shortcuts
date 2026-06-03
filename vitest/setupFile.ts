@@ -1,22 +1,12 @@
-import { beforeAll } from 'vitest';
+import { beforeAll, assert } from 'vitest';
 
-// let files: any;
-
-// (global as any).importModule = (modulePath: string) => {
-//   if (modulePath === './consoleLog') {
-//     return () => {}; // mock (do nothing)
-//   }
-
-//   if (modulePath === './isObjectNotEmpty') {
-//     return files?.isObjectNotEmpty;
-//   }
-
-//   if (modulePath === './mainScript') {
-//     return files?.mainScriptFunction;
-//   }
-//   return undefined;
-// };
+import { buildStatusJson } from './build-status';
 
 beforeAll(async () => {
-  // files = await import('../src/_shortcut_internal/files');
+  const buildStatus = await buildStatusJson.read();
+
+  assert(
+    buildStatus.isBuildPassed,
+    'Build failed. Tests stopped because dist is not safe to use.',
+  );
 });
