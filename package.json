@@ -8,9 +8,9 @@
     "extends": "@scriptable-ios"
   },
   "scripts": {
+    "typecheck": "tsc -b --noEmit",
     "typecheck:build": "tsc -p tsconfig.build.json --noEmit",
     "typecheck:test": "tsc -p tsconfig.vitest.json",
-    "typecheck": "npm run typecheck:build && npm run typecheck:test",
     "build": "vite build",
     "build:watch": "vite build --watch",
     "test": "vitest run",

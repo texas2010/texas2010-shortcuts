@@ -13,10 +13,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "noEmit": true,
 
-    "rootDir": "src",
-    "outDir": "dist",
-    "noEmitOnError": true
+    "rootDir": "src"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.test.ts"]

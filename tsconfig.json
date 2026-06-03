@@ -1,22 +1,8 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "useDefineForClassFields": true,
-    "module": "ES2022",
-    "lib": ["ES2022"],
-    "types": ["node", "scriptable-ios"],
-    "skipLibCheck": true,
-
-    "strict": true,
-    "ignoreDeprecations": "6.0",
-    "alwaysStrict": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noEmit": true
-
-    // "rootDir": "src"
-  },
-  "include": ["src/**/*.ts", "vitest.global-setup.ts"],
-  "exclude": ["**/*.test.ts", "tests/**/*", "dist/**/*", "node_modules/**/*"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.build.json" },
+    { "path": "./tsconfig.vitest.json" }
+  ]
 }

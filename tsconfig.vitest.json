@@ -3,6 +3,7 @@
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "lib": ["ES2020"],
     "types": ["vitest/globals", "node"],
     "strict": true,
     "skipLibCheck": true,
@@ -11,6 +12,7 @@
   "include": [
     "vitest.config.ts",
     "vitest.global-setup.ts",
+    "vitest-build-status.ts",
     "integration/**/*.ts",
     "src/**/*.test.ts"
   ],
