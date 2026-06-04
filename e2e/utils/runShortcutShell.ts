@@ -1,4 +1,5 @@
 import { runAppleScript } from 'run-applescript';
+
 import { isValidJson } from './isValidJson';
 
 interface RunShortcutResSuccess<T> {
@@ -14,30 +15,40 @@ interface RunShortcutResError {
 }
 
 class RunShortcutError extends Error {
-  constructor(public message: string, public sourceShortcut: string) {
+  constructor(
+    public message: string,
+    public sourceShortcut: string,
+  ) {
     super(message);
   }
 }
 
-export const runShortcutShell = async <T>(
+const isPlainObject = (value: unknown): value is ShortcutInput => {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    !Array.isArray(value) &&
+    Object.keys(value).length > 0
+  );
+};
+type ShortcutInput = object;
+
+export const runShortcutShell = async <
+  TOutput,
+  TInput extends ShortcutInput = ShortcutInput,
+>(
   shortcutName: string,
-  input: any | string = ''
-): Promise<RunShortcutResSuccess<T>> => {
-  const isInputEmpty = !input;
-  const isInputObj = typeof input === 'object';
+  input: TInput,
+): Promise<RunShortcutResSuccess<TOutput>> => {
+  if (!isPlainObject(input)) {
+    throw new Error('runShortcutShell: input must be a non-empty object');
+  }
 
   const json = JSON.stringify(input).replace(/"/g, '\\"');
-
   const appleScriptTemplate = `
-  ${isInputObj ? `set json to "${json}"` : ''}
+  set json to "${json}"
   tell application "Shortcuts Events"
-    run shortcut "${shortcutName}" ${
-    !isInputEmpty
-      ? isInputObj
-        ? `with input json`
-        : `with input "${input}"`
-      : ''
-  }
+    run shortcut "${shortcutName}" with input json
   end tell
 `;
 
@@ -47,7 +58,7 @@ export const runShortcutShell = async <T>(
     if (isValidJson(result)) {
       const parsed = JSON.parse(result) as
         | RunShortcutResError
-        | RunShortcutResSuccess<T>;
+        | RunShortcutResSuccess<TOutput>;
 
       if (parsed && 'error' in parsed && parsed.error === true) {
         throw new RunShortcutError(parsed.message, parsed.sourceShortcut);
@@ -61,7 +72,7 @@ export const runShortcutShell = async <T>(
     }
     const hasResultError = !!result ? ` ${result}` : '';
     throw new Error(
-      `runShortcutShell: Response is invalid and not JSON.${hasResultError}`
+      `runShortcutShell: Response is invalid and not JSON.${hasResultError}`,
     );
   } catch (error) {
     if (error instanceof RunShortcutError) {

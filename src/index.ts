@@ -5,5 +5,5 @@
 const mainScript = importModule('./_shortcut_internal/mainScript');
 const mainScriptResult = mainScript(args.shortcutParameter);
 
-Script.setShortcutOutput(mainScriptResult);
+Script.setShortcutOutput(JSON.stringify(mainScriptResult));
 Script.complete();

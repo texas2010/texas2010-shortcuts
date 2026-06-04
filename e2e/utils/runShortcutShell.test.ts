@@ -3,45 +3,51 @@ import { describe, expect, test } from 'vitest';
 import { runShortcutShell } from './runShortcutShell';
 
 describe('runShortcutShell Function', () => {
-  test('should be exist', () => {
+  test('should exist', () => {
     expect(runShortcutShell).toBeDefined();
   });
 
-  test('should have an error message when second argument is not exist', async ({
-    expect,
-  }) => {
+  test('should have an error message when second argument does not exist', async () => {
+    // @ts-expect-error testing missing input
     const func = runShortcutShell('TestRunShortcutShellHelper');
-    const errorMessage =
-      'TestRunShortcutShellHelper: Shortcut Input does not have any value';
+    const errorMessage = 'runShortcutShell: input must be a non-empty object';
+
     await expect(func).rejects.toThrow(errorMessage);
   });
 
-  test('should have an error message when second argument is string', async ({
-    expect,
-  }) => {
+  test('should have an error message when second argument is string', async () => {
+    // @ts-expect-error testing invalid input
     const func = runShortcutShell('TestRunShortcutShellHelper', 'hello');
-    const errorMessage = 'Input Type is Text. Invalid';
+    const errorMessage = 'runShortcutShell: input must be a non-empty object';
+
     await expect(func).rejects.toThrow(errorMessage);
   });
 
-  test('should have an error message when second argument is object and object is empty', async ({
-    expect,
-  }) => {
+  test('should have an error message when second argument is an empty object', async () => {
     const func = runShortcutShell('TestRunShortcutShellHelper', {});
-    const errorMessage = 'Dict is empty';
+    const errorMessage = 'runShortcutShell: input must be a non-empty object';
+
     await expect(func).rejects.toThrow(errorMessage);
   });
 
-  test('should have a success message when second argument is object', async () => {
-    const func = await runShortcutShell('TestRunShortcutShellHelper', {
+  test('should have an error message when second argument is an array', async () => {
+    const func = runShortcutShell('TestRunShortcutShellHelper', []);
+    const errorMessage = 'runShortcutShell: input must be a non-empty object';
+
+    await expect(func).rejects.toThrow(errorMessage);
+  });
+
+  test('should have a success message when second argument is a non-empty object', async () => {
+    const result = await runShortcutShell('TestRunShortcutShellHelper', {
       fakeKey: 'fakeValue',
     });
-    const resultObj = {
+
+    const expected = {
       success: true,
-      message: 'Input Type is Dict',
+      message: 'Input Type is JSON',
       file: 'TestRunShortcutShellHelper',
     };
 
-    expect(func).toStrictEqual(resultObj);
+    expect(result).toStrictEqual(expected);
   });
 });
