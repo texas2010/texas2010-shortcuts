@@ -33,7 +33,11 @@ async function runBuild(): Promise<void> {
 
 export default async function globalSetup(project: TestProject) {
   project.onTestsRerun(async () => {
-    await runBuild();
+    try {
+      await runBuild();
+    } catch {
+      // Keep Vitest watch alive.
+    }
   });
 
   await runBuild();

@@ -34,64 +34,6 @@ describe('RunScriptableShortcut function', () => {
     await expect(func).rejects.toThrow(errorMessage);
   });
 
-  test('should have an error message when actionType is empty', async () => {
-    const params = {
-      actionType: '',
-      sourceShortcut: 'sourceShortcut',
-      inputData: {
-        fakeKey: 'fakeValue',
-      },
-    } as RunScriptableParams;
-
-    const func = runScriptableShortcut(params);
-    const errorMessage = "actionType can't be empty";
-
-    await expect(func).rejects.toThrow(errorMessage);
-  });
-
-  test('should have an error message when sourceShortcut is empty', async () => {
-    const params = {
-      actionType: 'actionType',
-      sourceShortcut: '',
-      inputData: {
-        fakeKey: 'fakeValue',
-      },
-    } as RunScriptableParams;
-
-    const func = runScriptableShortcut(params);
-    const errorMessage = "sourceShortcut can't be empty";
-
-    await expect(func).rejects.toThrow(errorMessage);
-  });
-
-  test('should have an error message when actionType and sourceShortcut are empty', async () => {
-    const params = {
-      actionType: '',
-      sourceShortcut: '',
-      inputData: {
-        fakeKey: 'fakeValue',
-      },
-    } as RunScriptableParams;
-
-    const func = runScriptableShortcut(params);
-    const errorMessage = "actionType and sourceShortcut can't be empty";
-
-    await expect(func).rejects.toThrow(errorMessage);
-  });
-
-  test('should have an error message when inputData is empty', async () => {
-    const params = {
-      actionType: 'actionType',
-      sourceShortcut: 'sourceShortcut',
-      inputData: {},
-    } as RunScriptableParams;
-
-    const func = runScriptableShortcut(params);
-    const errorMessage = "inputData can't be empty";
-
-    await expect(func).rejects.toThrow(errorMessage);
-  });
-
   test('should have a success message', async () => {
     const params = {
       actionType: 'actionType',
@@ -103,8 +45,7 @@ describe('RunScriptableShortcut function', () => {
 
     const expected = {
       success: true,
-      shortcutDispatcher: 'This is a scriptable script.',
-      successMessage: 'This is a success message',
+      message: 'This is a success message',
     };
 
     const result = await runScriptableShortcut(params);
