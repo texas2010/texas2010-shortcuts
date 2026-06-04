@@ -12,7 +12,7 @@
   "include": [
     "vitest.config.ts",
     "vitest/**/*.ts",
-    "integration/**/*.ts",
+    "e2e/**/*.ts",
     "src/**/*.test.ts"
   ],
   "exclude": ["dist", "node_modules"]
