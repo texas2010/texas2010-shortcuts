@@ -8,9 +8,5 @@ export interface RunScriptableParams {
 }
 
 export const runScriptableShortcut = async <T>(params: RunScriptableParams) => {
-  try {
-    return runShortcutShell<T, RunScriptableParams>('RunScriptable', params);
-  } catch (error) {
-    throw new Error('RunScriptable failed');
-  }
+  return runShortcutShell<T, RunScriptableParams>('RunScriptable', params);
 };

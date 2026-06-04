@@ -2,11 +2,9 @@ import { runAppleScript } from 'run-applescript';
 
 import { isValidJson } from './isValidJson';
 
-interface RunShortcutResSuccess<T> {
+type RunShortcutResSuccess<T> = T & {
   success: true;
-  sourceShortcut: string;
-  data: T;
-}
+};
 
 interface RunShortcutResError {
   error: true;
