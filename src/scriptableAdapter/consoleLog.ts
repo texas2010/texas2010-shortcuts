@@ -1,4 +1,4 @@
-module.exports = async (subtitle: string = '', body: string) => {
+export const consoleLog = async (subtitle: string = '', body: string) => {
   const n = new Notification();
   n.title = 'Console Log';
   n.subtitle = subtitle;

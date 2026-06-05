@@ -5,10 +5,25 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     fileParallelism: false,
-    include: ['integration/**/*.test.ts', 'src/**/*.test.ts'],
+    reporters: ['tree'],
+    projects: [
+      {
+        test: {
+          name: 'unit',
+          include: ['src/**/*.test.ts'],
+        },
+      },
+      {
+        test: {
+          name: 'e2e',
+          include: ['e2e/**/*.test.ts'],
+          globalSetup: './vitest/e2eGlobalSetup.ts',
+          setupFiles: './vitest/e2eSetupFiles.ts',
+        },
+      },
+    ],
     typecheck: {
       tsconfig: './tsconfig.vitest.json',
     },
-    setupFiles: './vitest.setup.ts',
   },
 });

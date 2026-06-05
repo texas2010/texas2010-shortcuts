@@ -4,3 +4,6 @@ sources
 dist
 
 node_modules
+
+vitest/build-status.json
+*.tsbuildinfo
