@@ -1,5 +1,5 @@
-import { isPlainObject } from './utils/isPlainObject';
-import { isValidJson } from './utils/json/isValidJson';
+import { isPlainObject } from './isPlainObject';
+import { isValidJson } from './json/isValidJson';
 
 type InputResult =
   | {

@@ -1,5 +1,6 @@
-import { normalizeShortcutInput } from './normalizeShortcutInput';
 import { toJson } from './utils/json/toJson';
+import { normalizeShortcutInput } from './utils/normalizeShortcutInput';
+import { validateRunScriptableRequest } from './utils/validateRunScriptableRequest';
 
 // interface shortcutParameter {
 //   actionType: string;
@@ -42,9 +43,13 @@ export const mainScript = (rawShortcutParameter?: unknown): string => {
     return createErrorResult(inputResult.message);
   }
 
-  const shortcutParameter = inputResult.shortcutParameter;
+  const validation = validateRunScriptableRequest(
+    inputResult.shortcutParameter,
+  );
 
-  console.log(shortcutParameter);
+  if (!validation.success) {
+    return createErrorResult(validation.message);
+  }
 
   return createSuccessResult();
 };
